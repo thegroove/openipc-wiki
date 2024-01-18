@@ -48,3 +48,16 @@ modprobe cfg80211
 insmod ./ZT9101xV20.ko cfg=/root/zt9101-wifi/wifi.cfg
 ifup -v wlan0
 ```
+
+If this worked, it can be automated by adding the following to `/etc/wireless/usb`:
+```
+if [ "$1" = "zt9101-t31-camhipro" ]; then
+        set_gpio 61 0
+        modprobe cfg80211
+        DRV_PATH=/root/zt9101-wifi
+        cd $DRV_PATH
+        insmod $DRV_PATH/ZT9101xV20.ko cfg=$DRV_PATH/wifi.cfg
+        exit 0
+fi
+```
+Set your `wlandev` with: `fw_setenv wlandev zt9101-t31-camhipro`, as well as `wlanssid` and `wlanpass`, then reboot.
